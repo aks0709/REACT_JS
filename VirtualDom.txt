@@ -1,0 +1,14 @@
+createRoot --->create DOM like structure
+it compare actual dom and our dom and updates the things we mentioned
+
+React-fibre:- it is an ongoing reimplmentation of React core algorithm 
+it is to increase its suitablity for areas like animation ,layout,gestures
+Its headline feature is incremental rendering
+
+Key features:
+ability to pause,abort,reuse work as new updates in
+prioritize the updates
+
+ReConcsilation : The algo used to differentiate one tree with other,(the tree that is already there vs the tree from createRoot)
+
+Reconsiliation is the algorithm behind what is popularly understood as the "VIRTUAL DOM"
