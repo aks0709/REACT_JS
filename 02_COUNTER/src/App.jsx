@@ -12,8 +12,20 @@ function App() {
    //must be 'let'  tabhi value change hongi,const is not used
    //yeh counter jaha kahi pe bhi likha hoga poore web page mai udhar udhar changes honge
  const addValue=()=>{
-  if(counter<30)
+  if(counter<30){
   setCounter(counter+1)
+
+  //if we do multiple setCounter in this way
+  // setCounter(counter+1)
+  // setCounter(counter+1)
+  // setCounter(counter+1)
+  //use state hook send updates to U.I in form of batches,so it filter duplicates reqst
+  //  setCounter((prevCounter)=>prevCounter)
+  //  setCounter((prevCounter)=>prevCounter)
+  //  setCounter((prevCounter)=>prevCounter)
+  //  setCounter((prevCounter)=>prevCounter) 
+  // if we do this then counter directly update to + 4 
+  }
  }
 
  const subValue =()=>{
