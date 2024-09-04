@@ -1,22 +1,24 @@
 import { createContext,useContext } from "react";
 export const TodoContext=createContext({
+      //every todo item is an object {},{},{}
     todos :[
         {
             id :1,
             todo : "TODO MESSAGE",
-            completed : false
+            completed : false //check or uncheck
         }
     ],
     //functionalities  -->only name no defination
-    addTodo : (todo) =>{},
-    updatedTodo : (id,todo) =>{},
+    //inki functionalities ham app.jsx mai define karenge 
+    addTodo : (todo) =>{},  //addTodo(DSA)
+    updatedTodo : (id,todo) =>{},  
     deleteTodo : (id) =>{},
     toggleComplete: (id)=>{}
 })
 
-//method
+//method which return context 
 export const useTodo=()=>{
-    return useContext(TodoContext)
+    return useContext(TodoContext) //we created context above so we pass it here
 }
 
 export const TodoProvider=TodoContext.Provider 
