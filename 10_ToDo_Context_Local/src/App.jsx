@@ -1,73 +1,76 @@
-import { useState } from 'react'
-import {TodoProvider} from './Contexts'
-import './App.css'
+import { useEffect, useState } from 'react';
+import { TodoProvider } from './Contexts';
+import './App.css';
+import TodoForm from './Components/TodoForm';
+import TodoItem from './Components/TodoItem';
 
 function App() {
-  //see we get the todos and do changes on it then U.I will be changed so we use hooks
-  const [todos,setTodos]=useState([])
- //This is a state-setting function, likely coming from a useState hook in React, where todos is the state that holds an array of todo items.
+  // State to hold the list of todos
+  const [todos, setTodos] = useState([]);
 
+  // Function to add a new todo to the list
+  const addTodo = (todo) => {
+    // Ensure that the new todo is added without overwriting the previous todos
+    setTodos((prev) => [...prev, { id: Date.now(), ...todo }]);
+  };
 
+  // Function to update an existing todo based on its id
+  const updatedTodo = (id, todo) => {
+    setTodos((prev) => 
+      prev.map((prevTodo) => (prevTodo.id === id ? { ...prevTodo, ...todo } : prevTodo))
+    );
+  };
 
+  // Function to delete a todo based on its id
+  const deleteTodo = (id) => {
+    setTodos((prev) => prev.filter((prevTodo) => prevTodo.id !== id));
+  };
 
-  //defining functionalities of todo
-  const addTodo=(todo) => {//yeh jo todo paramteter hai usko ham add karenge in todos array which is initially empty
-  
-     //if we do like setTodo(todo) then previous all data will be deleted 
-    setTodos((prev)=>[...prev,{id : Date.now(),...prev}])  //prev is previous array 
-    //so what we do we spread previous array and add new  todo to it
-    //since array is in collection of objects {id : , todo : ,completed : }
-  }
+  // Function to toggle the completion status of a todo
+  const toggleComplete = (id) => {
+    setTodos((prev) => 
+      prev.map((prevTodo) => 
+        prevTodo.id === id 
+          ? { ...prevTodo, completed: !prevTodo.completed } 
+          : prevTodo
+      )
+    );
+  };
 
+  // Use useEffect to load todos from localStorage when the component first mounts
+  useEffect(() => {
+    const storedTodos = JSON.parse(localStorage.getItem("todos"));
+    if (storedTodos && storedTodos.length > 0) {
+      setTodos(storedTodos);
+    }
+  }, []);
 
-  //prev: previous state of todos
-  //map method is used to create a new array based on prev array
-  //It iterates over each prevTodo in the prev array.
-
-  /*
-  [
-  { id: 1, text: "Buy groceries" },
-  { id: 2, text: "Do laundry" },
-  { id: 3, text: "Clean the house" }
-]
-You call updatedTodo(2, { id: 2, text: "Do laundry and ironing" }).
-
-The map function will iterate over each todo:
-
-For id: 1, it will keep { id: 1, text: "Buy groceries" }.
-For id: 2, it will replace it with the new todo: { id: 2, text: "Do laundry and ironing" }.
-For id: 3, it will keep { id: 3, text: "Clean the house" }.
-  */
-  const updatedTodo = (id,todo)=>{
-    //yeh pehle walla prevTodo jo hai woh ek tarah se index hai
-    setTodos((prev)=> prev.map((prevTodo)=> (prevTodo.id === id ? todo : prevTodo)))
-  }
-
-
-  const deleteTodo = (id)=>{
-    setTodos((prev)=> prev.filter((prevtodo)=> prevtodo.id !== id ))
-  }
-
-
-  const toggleComplete = (id) =>{
-   // setTodos((prev)=> prev.map((prevTodo)=> prevTodo === id ?))
-  }
+  // Use useEffect to save todos to localStorage whenever the todos state changes
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
 
   return (
-   <TodoProvider value={{todos,addTodo,deleteTodo,updatedTodo,toggleComplete}}>
-   <div className="bg-[#172842] min-h-screen py-8">
-                <div className="w-full max-w-2xl mx-auto shadow-md rounded-lg px-4 py-3 text-white">
-                    <h1 className="text-2xl font-bold text-center mb-8 mt-2">Manage Your Todos</h1>
-                    <div className="mb-4">
-                        {/* Todo form goes here */} 
-                    </div>
-                    <div className="flex flex-wrap gap-y-3">
-                        {/*Loop and Add TodoItem here */}
-                    </div>
-                </div>
-            </div>
-   </TodoProvider>
-  )
+    <TodoProvider value={{ todos, addTodo, deleteTodo, updatedTodo, toggleComplete }}>
+      <div className="bg-[#172842] min-h-screen py-8">
+        <div className="w-full max-w-2xl mx-auto shadow-md rounded-lg px-4 py-3 text-white">
+          <h1 className="text-2xl font-bold text-center mb-8 mt-2">Manage Your Todos</h1>
+          <div className="mb-4">
+            {/* Todo form goes here */}
+            <TodoForm /> 
+          </div>
+          <div className="flex flex-wrap gap-y-3">
+            {/* Loop and Add TodoItem here */}
+            {todos.map((todo) => (
+              <div key={todo.id} className="w-full">
+                <TodoItem todo={todo} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </TodoProvider>
+  );
 }
 
-export default App
+export default App;
