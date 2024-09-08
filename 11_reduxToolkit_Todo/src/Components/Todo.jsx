@@ -1,23 +1,23 @@
-import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import {removeTodo} from '../Features/todo/todoSlice'
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { removeTodo } from '../Features/todo/todoSlice';
 
 function Todo() {
-    const todos = useSelector(state => state.todos)
-    const dispatch = useDispatch()
+  const todos = useSelector(state => state.todos); // Getting todos from Redux state
+  const dispatch = useDispatch(); // Dispatch function to trigger actions
 
   return (
     <>
-    <div>Todo</div>
-    <ul className="list-none">
+      <div>Todo</div>
+      <ul className="list-none">
         {todos.map((todo) => (
           <li
             className="mt-4 flex justify-between items-center bg-zinc-800 px-4 py-2 rounded"
-            key={todo.id}
+            key={todo.id} // Key should be unique for each todo
           >
-            <div className='text-white'>{todo.text}</div>
+            <div className='text-white'>{todo.text}</div> {/* Display todo text */}
             <button
-             onClick={() => dispatch(removeTodo(todo.id))}
+              onClick={() => dispatch(removeTodo(todo.id))} // Dispatching removeTodo action
               className="text-white bg-red-500 border-0 py-1 px-4 focus:outline-none hover:bg-red-600 rounded text-md"
             >
               <svg
@@ -39,7 +39,7 @@ function Todo() {
         ))}
       </ul>
     </>
-  )
+  );
 }
 
-export default Todo
+export default Todo;

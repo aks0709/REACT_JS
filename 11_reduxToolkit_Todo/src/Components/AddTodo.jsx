@@ -1,17 +1,19 @@
-import React, {useState} from 'react'
-import {useDispatch} from 'react-redux'
-import {addTodo} from '../Features/todo/todoSlice' 
-
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { addTodo } from '../Features/todo/todoSlice'; // Importing addTodo action from the correct path
 
 function AddTodo() {
-    const [input, setInput] = useState('')
-    const dispatch = useDispatch()//  useDispatch and useSelector are from react
-    //dispatch will use reducer to add value to store
-    const addTodoHandler = (e) => {
-        e.preventDefault()  //form ko submit hone se rokhna
-        dispatch(addTodo(input))
-        setInput('')
+  const [input, setInput] = useState('');
+  const dispatch = useDispatch(); // useDispatch and useSelector are from react-redux
+
+  // dispatch will use reducer to add value to store
+  const addTodoHandler = (e) => {
+    e.preventDefault(); // form ko submit hone se rokhna
+    if (input.trim()) { // check if input is not empty or just whitespace
+      dispatch(addTodo(input)); // Dispatch the action to add the todo
+      setInput(''); // Clear the input field after adding the todo
     }
+  };
 
   return (
     <form onSubmit={addTodoHandler} className="space-x-3 mt-12">
@@ -20,7 +22,7 @@ function AddTodo() {
         className="bg-gray-800 rounded border border-gray-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-900 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
         placeholder="Enter a Todo..."
         value={input}
-        onChange={(e) => setInput(e.target.value)}
+        onChange={(e) => setInput(e.target.value)} // Update input state on change
       />
       <button
         type="submit"
@@ -29,7 +31,7 @@ function AddTodo() {
         Add Todo
       </button>
     </form>
-  )
+  );
 }
 
-export default AddTodo
+export default AddTodo;
